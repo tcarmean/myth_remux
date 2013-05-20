@@ -38,6 +38,8 @@ def remux( filename, temp_file ):
 		exit(1)
 	return
 
+# Rebuild the keyframe index and the like. Not entirely sure what this does but it is suggested here:
+# http://www.mythtv.org/wiki/Mythtranscode#Fixing_.22Deadlock_detected._One_buffer_is_full_when_the_other_is_empty.21.22
 def reindex ( temp_file ):
 	cmdline = [
 		'mythtranscode',
@@ -54,10 +56,28 @@ def reindex ( temp_file ):
 		exit(1)
 	return
 
-
+# Here's where we re-run the commflag stuff.
+# The commfalg app can't work based off a filename like everything else can so we'll need the following from the userjob stuff:
+# %CHANID% %STARTTIME%
+def commflag ( channel, starttime ):
+	cmdline = [
+		'mythcommflag',
+		'--chanid',
+		channel,
+		'--starttime',
+		starttime,
+		'--noprogress',
+		]
+	try:
+		print('weeeeee!')
+	except CalledProcessError:
+		print(CalledProcessError.returncode)
+		exit(1)
+	return
 
 
 # Main method. This is the entry point of the application
+# TODO: See notes on commflag. Need to add 2 more args and store them to variables
 if __name__ == "__main__":
 	if (len(sys.argv) != 3):
 		exit(1)
