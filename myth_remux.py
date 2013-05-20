@@ -38,6 +38,23 @@ def remux( filename, temp_file ):
 		exit(1)
 	return
 
+def reindex ( temp_file ):
+	cmdline = [
+		'mythtranscode',
+		'--mpeg2',
+		'--buildindex',
+		'--allkeys',
+		'--infile',
+		temp_file,
+		]
+	try:
+		print('weeeee!')
+	except CalledProcessError:
+		print(CalledProcessError.returncode)
+		exit(1)
+	return
+
+
 
 
 # Main method. This is the entry point of the application
