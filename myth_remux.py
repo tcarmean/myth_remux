@@ -3,6 +3,7 @@
 import sys
 import base64
 import uuid
+import subprocess
 
 # The hdhomerun is spitting out junk files. We'll use ffmpeg to remux them
 # (kind of) in place. We'll then rebuild the cutlist and whatnot.
@@ -19,12 +20,23 @@ def remux( filename, temp_file ):
 	# ffmpeg -i filename -acodec copy -vcodec copy temp_file
 	# We will use subprocess.check_call as described here:
 	# http://docs.python.org/2/library/subprocess.html
+	cmdline = [
+		'avconv',
+		'-i',
+		filename,
+		'-vcodec',
+		'copy',
+		'-acodec',
+		'copy',
+		temp_file,
+		]
 	try:
 		# check_call()
+		print('weeee!')
 	except CalledProcessError:
 		print(CalledProcessError.returncode)
 		exit(1)
-
+	return
 
 
 
