@@ -46,7 +46,7 @@ def remux( filename, temp_file ):
 # http://www.mythtv.org/wiki/Mythtranscode#Fixing_.22Deadlock_detected._One_buffer_is_full_when_the_other_is_empty.21.22
 def reindex ( temp_file ):
 	cmdline = [
-		'mythtranscode',
+		'/usr/bin/mythtranscode',
 		'--mpeg2',
 		'--buildindex',
 		'--allkeys',
@@ -54,18 +54,22 @@ def reindex ( temp_file ):
 		temp_file,
 		]
 	try:
-		print('weeeee!')
-	except CalledProcessError:
-		print(CalledProcessError.returncode)
+		print('In reindex method: calling subprocess.check_call()')
+		subprocess.check_call(cmdline)
+	except subprocess.CalledProcessError, e:
+		print('In reindex method: something broke!')
+		print(e.cmd)
+		print(e.returncode)
 		exit(1)
 	return
 
 # Here's where we re-run the commflag stuff.
 # The commfalg app can't work based off a filename like everything else can so we'll need the following from the userjob stuff:
 # %CHANID% %STARTTIME%
+# Need to read the wiki page on mythcommflag again. Might not need the extra args here...
 def commflag ( channel, starttime ):
 	cmdline = [
-		'mythcommflag',
+		'/usr/bin/mythcommflag',
 		'--chanid',
 		channel,
 		'--starttime',
@@ -73,9 +77,12 @@ def commflag ( channel, starttime ):
 		'--noprogress',
 		]
 	try:
-		print('weeeeee!')
-	except CalledProcessError:
-		print(CalledProcessError.returncode)
+		print('In commflag method: calling subprocess.check_call()')
+		subprocess.check_call(cmdline)
+	except subprocess.CalledProcessError, e:
+		print('In commflag method: something broke!')
+		print(e.cmd)
+		print(e.returncode)
 		exit(1)
 	return
 
