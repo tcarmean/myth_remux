@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
+import os
 import sys
 import base64
 import uuid
 import subprocess
+#import MySQLdb
 
 # The hdhomerun is spitting out junk files. We'll use ffmpeg to remux them
 # (kind of) in place. We'll then rebuild the cutlist and whatnot.
@@ -41,7 +43,12 @@ def remux( filename, temp_file ):
 		print(e.returncode)
 		exit(1)
 	# Right here we should probably replace the file and update the database with the new size.
-	print(os.path.getsize(temp_file))
+	
+	# we should parse the config file for this info...
+#	db = MySQLdb.connect(host="localhost",
+#		user="foo",
+#		passwd="bar",
+#		db="mythconverg")
 	return
 
 # Rebuild the keyframe index and the like. Not entirely sure what this does but it is suggested here:
@@ -88,6 +95,15 @@ def commflag ( channel, starttime ):
 		exit(1)
 	return
 
+def updatedb ( filename ):
+	file_size = os.path.getsize(filename)
+	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
+	# we should parse the config file for this info...
+#	db = MySQLdb.connect(host="localhost",
+#		user="foo",
+#		passwd="bar",
+#		db="mythconverg")
+	return
 
 # Main method. This is the entry point of the application
 # TODO: See notes on commflag. Need to add 2 more args and store them to variables
@@ -95,11 +111,15 @@ if __name__ == "__main__":
 	if (len(sys.argv) != 3):
 		exit(1)
 
-	orig_dir = sys.argv[1]
-	orig_file = sys.argv[2]
-	filename = sys.argv[1] + sys.argv[2]
+#	orig_dir = sys.argv[1]
+#	orig_file = sys.argv[2]
+	filename = os.path.join(sys.argv[1], sys.argv[2])
+	# Example: we can ue os.path.split to break stuff up into the base dir and the end filename
+#	bn, fn = os.path.split(filename)
+#	print('Base: ' + bn)
+#	print('File: ' + fn)
 	temp_file = '/tmp/' + base64.urlsafe_b64encode(uuid.uuid4().bytes) + '.mpg'
-#	print('Remuxing ' + filename + ' as ' + temp_file)
+	print('Remuxing ' + filename + ' as ' + temp_file)
 	remux(filename,temp_file)
 
 
