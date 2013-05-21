@@ -35,9 +35,10 @@ def remux( filename, temp_file ):
 		print('In remux method: calling subprocess.check_call()')
 		print('Remuxing ' + filename + ' to ' + temp_file)
 		subprocess.check_call(cmdline)
-	except subprocess.CalledProcessError:
+	except subprocess.CalledProcessError, e:
 		print('In remux method: something broke!')
-		print(CalledProcessError.returncode)
+		print (e.cmd)
+		print(e.returncode)
 		exit(1)
 	return
 
