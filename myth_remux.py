@@ -21,7 +21,7 @@ def remux( filename, temp_file ):
 	# We will use subprocess.check_call as described here:
 	# http://docs.python.org/2/library/subprocess.html
 	cmdline = [
-		'avconv',
+		'/usr/bin/avconv',
 		'-i',
 		filename,
 		'-vcodec',
@@ -32,8 +32,11 @@ def remux( filename, temp_file ):
 		]
 	try:
 		# check_call()
-		print('weeee!')
-	except CalledProcessError:
+		print('In remux method: calling subprocess.check_call()')
+		print('Remuxing ' + filename + ' to ' + temp_file)
+		subprocess.check_call(cmdline)
+	except subprocess.CalledProcessError:
+		print('In remux method: something broke!')
 		print(CalledProcessError.returncode)
 		exit(1)
 	return
@@ -86,5 +89,7 @@ if __name__ == "__main__":
 	orig_file = sys.argv[2]
 	filename = sys.argv[1] + sys.argv[2]
 	temp_file = '/tmp/' + base64.urlsafe_b64encode(uuid.uuid4().bytes) + '.mpg'
-	print('Remuxing ' + filename + ' as ' + temp_file)
+#	print('Remuxing ' + filename + ' as ' + temp_file)
+	remux(filename,temp_file)
+
 
