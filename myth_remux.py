@@ -5,6 +5,8 @@ import sys
 import base64
 import uuid
 import subprocess
+import ConfigParser
+import StringIO
 #import MySQLdb
 
 # The hdhomerun is spitting out junk files. We'll use ffmpeg to remux them
@@ -14,7 +16,6 @@ import subprocess
 # Usage should be: myth_remux.py <dir> <file>
 
 # We need exactly 2 args so fail if we don't have them.
-
 
 # The first thing we need to do is remux the input file
 def remux( filename, temp_file ):
@@ -96,8 +97,17 @@ def commflag ( channel, starttime ):
 	return
 
 def updatedb ( filename ):
-	file_size = os.path.getsize(filename)
-	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
+	# ConfigParser requires a [section] header so we have to add one to mysql.txt in order to get it to parse cleanly
+	config_path = os.path.expanduser('~') + os.sep + '.mythtv' + os.sep + 'mysql.txt'
+	config = StringIO.StringIO()
+	config.write('[dummysection]\n')
+	config.write(open(config_path, 'r').read())
+	config.seek(0, os.SEEK_SET)
+	cp = ConfigParser.SafeConfigParser()
+	cp.readfp(config)
+	print(cp.items('dummysection'))
+#	file_size = os.path.getsize(filename)
+#	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
 	# we should parse the config file for this info...
 	# http://docs.python.org/2/library/configparser.html
 	# http://stackoverflow.com/questions/9161439/parse-key-value-pairs-in-a-text-file
@@ -121,7 +131,8 @@ if __name__ == "__main__":
 #	print('Base: ' + bn)
 #	print('File: ' + fn)
 	temp_file = '/tmp/' + base64.urlsafe_b64encode(uuid.uuid4().bytes) + '.mpg'
-	print('Remuxing ' + filename + ' as ' + temp_file)
-	remux(filename,temp_file)
+	#print('Remuxing ' + filename + ' as ' + temp_file)
+	updatedb(filename)
+#	remux(filename,temp_file)
 
 
