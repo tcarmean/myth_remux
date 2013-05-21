@@ -9,6 +9,7 @@ Dependencies (Version reflects what is presently installed on my system, not a h
 libav-tools Version: 4:0.8.6-0ubuntu0.12.04.1
 mythtv-backend Version: 2:0.25.0+fixes.20120410.1f5962a-0ubuntu1
 mythtv-transcode-utils Version: 2:0.25.2+fixes.20120802.46cab93-0ubuntu
+python-mysqldb Version: 1.2.3-1build1
 
 The problem:
 

@@ -99,6 +99,8 @@ def updatedb ( filename ):
 	file_size = os.path.getsize(filename)
 	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
 	# we should parse the config file for this info...
+	# http://docs.python.org/2/library/configparser.html
+	# http://stackoverflow.com/questions/9161439/parse-key-value-pairs-in-a-text-file
 #	db = MySQLdb.connect(host="localhost",
 #		user="foo",
 #		passwd="bar",
