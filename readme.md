@@ -15,5 +15,9 @@ The problem:
 
 My HDHomerun is dumping out files that mythtranscode can't cut commercials from. It is continually failing with the, "Deadlock detected. One buffer is full when the other is empty," error mesage (http://www.mythtv.org/wiki/Mythtranscode#Fixing_.22Deadlock_detected._One_buffer_is_full_when_the_other_is_empty.21.22). This app is meant to be a wrapper that can be run in a User Job to fix the file, reflag all the commercials, and (lossless) transcode the file without commercials.
 
+Things to keep in mind:
+
+This application doesn't do an in-place remux. Instead, it creates a new file in /tmp and copies the data to a new file. Obviously, there are space concerns here. I recommend tweaking the amount of free space that Myth is allowed to use if your backend is like mine and only has a single disk.
+
 I'm very much a python newb so please make suggestions on how to improve the code. I'm mostly doing this to learn!
 
