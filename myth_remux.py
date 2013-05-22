@@ -118,7 +118,7 @@ def updatedb ( filename ):
 	config.seek(0, os.SEEK_SET)
 	cp = ConfigParser.SafeConfigParser()
 	cp.readfp(config)
-	print(cp.items('dummysection'))
+#	print(cp.items('dummysection'))
 #	file_size = os.path.getsize(filename)
 	query = 'SELECT VERSION()'
 #	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
@@ -131,9 +131,10 @@ def updatedb ( filename ):
 			passwd=cp.get('dummysection','dbpassword'),
 			db=cp.get('dummysection','dbname'),
 			port=cp.get('dummysection','dbport'))
-		db.execute(query)
+		cur = db.cursor()
+		cur.execute(query)
 		# only for example purposes won't need this in the real, final script...
-		ver = db.fetchone()
+		ver = cur.fetchone()
 		print('Database Version: ' + ver)
 	except MySQLdb.Error, e:
 		# error handling
