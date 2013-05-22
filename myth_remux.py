@@ -45,6 +45,7 @@ def remux( filename, temp_file ):
 	finally:
 		print('In remux method: cleaning up after failure')
 		os.remove(temp_file)
+		exit(1)
 	# Right here we should probably replace the file and update the database with the new size.
 	print('In remux method: remux completed successfully!')
 	print('Results')
