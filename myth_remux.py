@@ -143,6 +143,7 @@ def updatedb ( filename ):
 	finally:
 		# THIS ALWAYS GETS EXECUTED NO MATTER WHAT HAPPENS ABOVE
 		if db:
+			cur.close()
 			db.close()
 	return
 
