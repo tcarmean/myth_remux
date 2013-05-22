@@ -47,7 +47,7 @@ def remux( filename, temp_file ):
 	# Right here we should probably replace the file and update the database with the new size.
 	print('In remux method: remux completed successfully!')
 	print('Results')
-	print('File: ' + temp_file + ' Size: ' + os.path.getsize(temp_file))
+	print('File: ' + temp_file + ' Size: ' + str(os.path.getsize(temp_file)))
 	return
 
 # Rebuild the keyframe index and the like. Not entirely sure what this does but it is suggested here:
