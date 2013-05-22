@@ -7,6 +7,7 @@ import uuid
 import subprocess
 import ConfigParser
 import StringIO
+import shutil
 #import MySQLdb
 
 # The hdhomerun is spitting out junk files. We'll use ffmpeg to remux them
@@ -57,6 +58,7 @@ def remux( filename, temp_file ):
 	print('In remux method: remux completed successfully!')
 	print('Results')
 	print('File: ' + temp_file + ' Size: ' + str(os.path.getsize(temp_file)))
+#	shutil.move(temp_file, filename)
 	return
 
 # Rebuild the keyframe index and the like. Not entirely sure what this does but it is suggested here:
