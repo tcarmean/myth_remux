@@ -33,6 +33,14 @@ def remux( filename, temp_file ):
 		'copy',
 		temp_file,
 		]
+	bn, fn = os.path.split(temp_file)
+	st = os.stat(bn)
+	du = st.st_blocks * st.st_blksize
+	fs = os.path.getsize(filename)
+	if du <= fs:
+		print('I don\'t think you have enough space to do this...')
+		print('Original filesize: ' + str(fs) + ' Free disk space: ' + str(du))
+		exit(1)
 	try:
 		print('In remux method: calling subprocess.check_call()')
 		print('Remuxing ' + filename + ' to ' + temp_file)
