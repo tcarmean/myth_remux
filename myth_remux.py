@@ -136,7 +136,7 @@ def updatedb ( filename ):
 		cur.execute(query)
 		# only for example purposes won't need this in the real, final script...
 		ver = cur.fetchone()
-		print('Database Version: ' + ver)
+		print('Database Version: ' + str(ver))
 	except MySQLdb.Error, e:
 		# error handling
 		print('Error: ' + e.args[0] + e.args[1])
