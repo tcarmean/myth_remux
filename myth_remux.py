@@ -8,7 +8,11 @@ import subprocess
 import ConfigParser
 import StringIO
 import shutil
-#import MySQLdb
+try:
+	import MySQLdb
+except ImportError:
+	print('You need to install the MySQLdb python module in order to use this script')
+	exit(1)
 
 # The hdhomerun is spitting out junk files. We'll use ffmpeg to remux them
 # (kind of) in place. We'll then rebuild the cutlist and whatnot.
@@ -116,14 +120,29 @@ def updatedb ( filename ):
 	cp.readfp(config)
 	print(cp.items('dummysection'))
 #	file_size = os.path.getsize(filename)
+	query = 'SELECT VERSION()'
 #	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
 	# we should parse the config file for this info...
 	# http://docs.python.org/2/library/configparser.html
 	# http://stackoverflow.com/questions/9161439/parse-key-value-pairs-in-a-text-file
-#	db = MySQLdb.connect(host="localhost",
-#		user="foo",
-#		passwd="bar",
-#		db="mythconverg")
+	try:
+		db = MySQLdb.connect(host=cp.get('dummysection','dbhostname'),
+			user=cp.get('dummysection','dbusername'),
+			passwd=cp.get('dummysection','dbpassword'),
+			db=cp.get('dummysection','dbname'),
+			port=cp.get('dummysection','dbport'))
+		db.execute(query)
+		# only for example purposes won't need this in the real, final script...
+		ver = db.fetchone()
+		print('Database Version: ' + ver)
+	except MySQLdb.Error, e:
+		# error handling
+		print('Error: ' + e.args[0] + e.args[1])
+		exit(1)
+	finally:
+		# THIS ALWAYS GETS EXECUTED NO MATTER WHAT HAPPENS ABOVE
+		if db:
+			db.close()
 	return
 
 # Main method. This is the entry point of the application
@@ -141,6 +160,6 @@ if __name__ == "__main__":
 	temp_file = base64.urlsafe_b64encode(uuid.uuid4().bytes) + '.mpg'
 	temp_fn = os.path.join(temp_path, temp_file)
 	#print('Remuxing ' + filename + ' as ' + temp_file)
-#	updatedb(filename)
-	remux(filename,temp_fn)
+	updatedb(filename)
+#	remux(filename,temp_fn)
 
