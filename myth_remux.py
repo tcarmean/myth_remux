@@ -34,7 +34,6 @@ def remux( filename, temp_file ):
 		temp_file,
 		]
 	try:
-		# check_call()
 		print('In remux method: calling subprocess.check_call()')
 		print('Remuxing ' + filename + ' to ' + temp_file)
 		subprocess.check_call(cmdline)
@@ -42,14 +41,14 @@ def remux( filename, temp_file ):
 		print('In remux method: something broke!')
 		print (e.cmd)
 		print(e.returncode)
-		exit(1)
+#		exit(1)
+	finally:
+		print('In remux method: cleaning up after failure')
+		os.remove(temp_file)
 	# Right here we should probably replace the file and update the database with the new size.
-	
-	# we should parse the config file for this info...
-#	db = MySQLdb.connect(host="localhost",
-#		user="foo",
-#		passwd="bar",
-#		db="mythconverg")
+	print('In remux method: remux completed successfully!')
+	print('Results')
+	print('File: ' + temp_file + ' Size: ' + os.path.getsize(temp_file))
 	return
 
 # Rebuild the keyframe index and the like. Not entirely sure what this does but it is suggested here:
@@ -123,16 +122,15 @@ if __name__ == "__main__":
 	if (len(sys.argv) != 3):
 		exit(1)
 
-#	orig_dir = sys.argv[1]
-#	orig_file = sys.argv[2]
 	filename = os.path.join(sys.argv[1], sys.argv[2])
 	# Example: we can ue os.path.split to break stuff up into the base dir and the end filename
 #	bn, fn = os.path.split(filename)
 #	print('Base: ' + bn)
 #	print('File: ' + fn)
-	temp_file = '/tmp/' + base64.urlsafe_b64encode(uuid.uuid4().bytes) + '.mpg'
+	temp_path = '/tmp'
+	temp_file = base64.urlsafe_b64encode(uuid.uuid4().bytes) + '.mpg'
+	temp_fn = os.path.join(temp_path, temp_file)
 	#print('Remuxing ' + filename + ' as ' + temp_file)
-	updatedb(filename)
-#	remux(filename,temp_file)
-
+#	updatedb(filename)
+	remux(filename,temp_fn)
 
