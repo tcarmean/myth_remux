@@ -142,9 +142,8 @@ def updatedb ( filename ):
 		exit(1)
 	finally:
 		# THIS ALWAYS GETS EXECUTED NO MATTER WHAT HAPPENS ABOVE
-		if db:
-			cur.close()
-			db.close()
+		cur.close()
+		db.close()
 	return
 
 # Main method. This is the entry point of the application
