@@ -34,6 +34,7 @@ def remux( filename, temp_file ):
 		temp_file,
 		]
 	bn, fn = os.path.split(temp_file)
+	# Is os.statvfs really deprecated since version 2.6? Pretty sure I'm able to call it on v2.7...
 	st = os.statvfs(bn)
 	du = st.f_bavail * st.f_frsize
 	fs = os.path.getsize(filename)
