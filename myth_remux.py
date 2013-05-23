@@ -138,7 +138,7 @@ def updatedb ( filename ):
 		cur.execute("""UPDATE recorded
 			SET filesize=%s
 			WHERE basename=%s""",
-			(file_size,filename))
+			(str(file_size),filename))
 		# only for example purposes won't need this in the real, final script...
 #		ver = cur.fetchone()
 #		print('Database Version: ' + ver[0])
