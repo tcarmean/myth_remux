@@ -62,7 +62,7 @@ def remux( filename, temp_file ):
 	print('In remux method: remux completed successfully!')
 	print('Results')
 	print('File: ' + temp_file + ' Size: ' + str(os.path.getsize(temp_file)))
-#	shutil.move(temp_file, filename)
+	shutil.move(temp_file, filename)
 	return
 
 # Rebuild the keyframe index and the like. Not entirely sure what this does but it is suggested here:
@@ -119,8 +119,8 @@ def updatedb ( filename ):
 	cp = ConfigParser.SafeConfigParser()
 	cp.readfp(config)
 #	print(cp.items('dummysection'))
-#	file_size = os.path.getsize(filename)
-	query = 'SELECT VERSION()'
+	file_size = os.path.getsize(filename)
+#	query = 'SELECT VERSION()'
 #	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
 	# we should parse the config file for this info...
 	# http://docs.python.org/2/library/configparser.html
@@ -133,10 +133,13 @@ def updatedb ( filename ):
 			port=int(cp.get('dummysection','dbport')))
 		print('In updatedb: MySQLdb.connect() succeeded!')
 		cur = db.cursor()
-		cur.execute(query)
+		cur.execute("""UPDATE recorded
+			SET filesize=%s
+			WHERE basename=%s""",
+			(file_size,filename))
 		# only for example purposes won't need this in the real, final script...
-		ver = cur.fetchone()
-		print('Database Version: ' + ver[0])
+#		ver = cur.fetchone()
+#		print('Database Version: ' + ver[0])
 	except MySQLdb.Error, e:
 		# error handling
 		print('Error: ' + e.args[0] + e.args[1])
@@ -151,6 +154,7 @@ def updatedb ( filename ):
 # TODO: See notes on commflag. Need to add 2 more args and store them to variables
 if __name__ == "__main__":
 	if (len(sys.argv) != 3):
+		print('This script only accepts 2 arguments! You passed in ' + len(sys.argv) '!')
 		exit(1)
 
 	filename = os.path.join(sys.argv[1], sys.argv[2])
@@ -162,6 +166,6 @@ if __name__ == "__main__":
 	temp_file = base64.urlsafe_b64encode(uuid.uuid4().bytes) + '.mpg'
 	temp_fn = os.path.join(temp_path, temp_file)
 	#print('Remuxing ' + filename + ' as ' + temp_file)
+	remux(filename,temp_fn)
 	updatedb(filename)
-#	remux(filename,temp_fn)
 
