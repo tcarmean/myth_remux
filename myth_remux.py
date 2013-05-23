@@ -120,6 +120,7 @@ def updatedb ( filename ):
 	cp.readfp(config)
 #	print(cp.items('dummysection'))
 	file_size = os.path.getsize(filename)
+	dn,fn = os.path.split(filename)
 	print('Check the db that filesize is updated to: ' + str(file_size))
 #	query = 'SELECT VERSION()'
 #	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
@@ -138,7 +139,7 @@ def updatedb ( filename ):
 		cur.execute("""UPDATE recorded
 			SET filesize=%s
 			WHERE basename=%s""",
-			(str(file_size),filename))
+			(file_size,fn))
 		# only for example purposes won't need this in the real, final script...
 #		ver = cur.fetchone()
 #		print('Database Version: ' + ver[0])
