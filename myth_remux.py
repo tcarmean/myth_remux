@@ -67,14 +67,14 @@ def remux( filename, temp_file ):
 
 # Rebuild the keyframe index and the like. Not entirely sure what this does but it is suggested here:
 # http://www.mythtv.org/wiki/Mythtranscode#Fixing_.22Deadlock_detected._One_buffer_is_full_when_the_other_is_empty.21.22
-def reindex ( temp_file ):
+def reindex ( filename ):
 	cmdline = [
 		'/usr/bin/mythtranscode',
 		'--mpeg2',
 		'--buildindex',
 		'--allkeys',
 		'--infile',
-		temp_file,
+		filename,
 		]
 	try:
 		print('In reindex method: calling subprocess.check_call()')
@@ -87,16 +87,12 @@ def reindex ( temp_file ):
 	return
 
 # Here's where we re-run the commflag stuff.
-# The commfalg app can't work based off a filename like everything else can so we'll need the following from the userjob stuff:
-# %CHANID% %STARTTIME%
 # Need to read the wiki page on mythcommflag again. Might not need the extra args here...
-def commflag ( channel, starttime ):
+def commflag ( filename ):
 	cmdline = [
 		'/usr/bin/mythcommflag',
-		'--chanid',
-		channel,
-		'--starttime',
-		starttime,
+		'-f',
+		filename,
 		'--noprogress',
 		]
 	try:
@@ -171,4 +167,6 @@ if __name__ == "__main__":
 	#print('Remuxing ' + filename + ' as ' + temp_file)
 	remux(filename,temp_fn)
 	updatedb(filename)
+	reindex(filename)
+	commflag(filename)
 
