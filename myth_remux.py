@@ -155,7 +155,7 @@ def updatedb ( filename ):
 # TODO: See notes on commflag. Need to add 2 more args and store them to variables
 if __name__ == "__main__":
 	if (len(sys.argv) != 3):
-		print('This script only accepts 2 arguments! You passed in ' + len(sys.argv) '!')
+		print('This script only accepts 2 arguments! You passed in ' + len(sys.argv) + '!')
 		exit(1)
 
 	filename = os.path.join(sys.argv[1], sys.argv[2])
