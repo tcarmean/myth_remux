@@ -120,6 +120,7 @@ def updatedb ( filename ):
 	cp.readfp(config)
 #	print(cp.items('dummysection'))
 	file_size = os.path.getsize(filename)
+	print('Check the db that filesize is updated to: ' + str(file_size))
 #	query = 'SELECT VERSION()'
 #	query = 'UPDATE recorded SET filesize = \'file_size\' WHERE basename = \'filename\';'
 	# we should parse the config file for this info...
