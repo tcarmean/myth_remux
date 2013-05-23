@@ -131,7 +131,8 @@ def updatedb ( filename ):
 			user=cp.get('dummysection','dbusername'),
 			passwd=cp.get('dummysection','dbpassword'),
 			db=cp.get('dummysection','dbname'),
-			port=int(cp.get('dummysection','dbport')))
+			port=int(cp.get('dummysection','dbport')),
+			autocommit=True)
 		print('In updatedb: MySQLdb.connect() succeeded!')
 		cur = db.cursor()
 		cur.execute("""UPDATE recorded
