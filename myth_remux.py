@@ -150,7 +150,6 @@ def updatedb ( filename ):
 	return
 
 # Main method. This is the entry point of the application
-# TODO: See notes on commflag. Need to add 2 more args and store them to variables
 if __name__ == "__main__":
 	if (len(sys.argv) != 3):
 		print('This script only accepts 2 arguments! You passed in ' + len(sys.argv) + '!')
