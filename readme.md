@@ -21,3 +21,4 @@ This application doesn't do an in-place remux. Instead, it creates a new file in
 
 I'm very much a python newb so please make suggestions on how to improve the code. I'm mostly doing this to learn!
 
+todo... more stuff
